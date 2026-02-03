@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CONFIG } from './constants';
 import AudioPlayer from './components/AudioPlayer';
+import DecorativeElements from './components/DecorativeElements';
 import Page0Intro from './components/Page0Intro';
 import Page1Start from './components/Page1Start';
 import Page2Gallery from './components/Page2Gallery';
@@ -78,6 +79,7 @@ Waktu: ${timestamp}`;
 
   return (
     <>
+      <DecorativeElements />
       <div className="bg-image-container">
         <AnimatePresence>
           {bgImage && (

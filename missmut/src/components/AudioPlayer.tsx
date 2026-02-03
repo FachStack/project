@@ -24,6 +24,27 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ isPlaying, onToggle }) => {
     }
   }, [isPlaying]);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (audioRef.current && !audioRef.current.paused) {
+          audioRef.current.pause();
+        }
+      } else {
+        if (isPlaying && audioRef.current && audioRef.current.paused) {
+          audioRef.current.play().catch(err => {
+            console.warn("Audio resume failed:", err);
+          });
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isPlaying]);
+
   return (
     <>
       <audio

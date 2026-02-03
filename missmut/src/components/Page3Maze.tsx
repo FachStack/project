@@ -26,6 +26,7 @@ const GOAL = { x: 9, y: 9 };
 const Page3Maze: React.FC<Page3MazeProps> = ({ onComplete }) => {
   const [pos, setPos] = useState(START);
   const [messageIndex, setMessageIndex] = useState(-1);
+  const [visited, setVisited] = useState<string[]>([]);
 
   const move = useCallback((dx: number, dy: number) => {
     const newX = pos.x + dx;
@@ -37,6 +38,7 @@ const Page3Maze: React.FC<Page3MazeProps> = ({ onComplete }) => {
       MAZE_GRID[newY][newX] === 0
     ) {
       setPos({ x: newX, y: newY });
+      setVisited(prev => [...prev, `${newX}-${newY}`]);
 
       // Show messages based on progress
       const progress = newX + newY;
@@ -47,7 +49,7 @@ const Page3Maze: React.FC<Page3MazeProps> = ({ onComplete }) => {
       if (progress > 16 && messageIndex < 4) setMessageIndex(4);
 
       if (newX === GOAL.x && newY === GOAL.y) {
-        setTimeout(onComplete, 1000);
+        setTimeout(onComplete, 1500);
       }
     }
   }, [pos, messageIndex, onComplete]);
@@ -65,7 +67,7 @@ const Page3Maze: React.FC<Page3MazeProps> = ({ onComplete }) => {
 
   return (
     <div className="page-content" style={{ textAlign: 'center' }}>
-      <h2 style={{ fontSize: '1.2rem', marginBottom: '10px' }}>Temuin "Dias" ya...</h2>
+      <h2 style={{ fontSize: '1.2rem', marginBottom: '10px' }}>Temuin "Dias" ya... 💖</h2>
       <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '20px' }}>
         {TEXTS.maze.controls}
       </p>
@@ -75,9 +77,9 @@ const Page3Maze: React.FC<Page3MazeProps> = ({ onComplete }) => {
           {messageIndex >= 0 && (
             <motion.p
               key={messageIndex}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
               className="maze-message"
             >
               "{TEXTS.maze.messages[messageIndex]}"
@@ -92,17 +94,27 @@ const Page3Maze: React.FC<Page3MazeProps> = ({ onComplete }) => {
             <div
               key={`${x}-${y}`}
               className={`maze-cell ${cell === 1 ? 'maze-wall' : ''} ${x === GOAL.x && y === GOAL.y ? 'maze-goal' : ''}`}
+              style={{ position: 'relative' }}
             >
+              {visited.includes(`${x}-${y}`) && !(x === pos.x && y === pos.y) && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 0.4, scale: 1 }}
+                  style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: '#ff8b94', fontSize: '0.5rem' }}
+                >
+                  ❤️
+                </motion.div>
+              )}
               {x === pos.x && y === pos.y && (
-                <motion.div layoutId="player" className="maze-player">
+                <motion.div layoutId="player" className="maze-player" transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
                   <Heart size={20} fill="#ff8b94" color="#ff8b94" />
                 </motion.div>
               )}
               {x === START.x && y === START.y && x !== pos.x && y !== pos.y && (
-                <span style={{ fontSize: '0.6rem' }}>Fachrul</span>
+                <span style={{ fontSize: '0.55rem', fontWeight: 'bold' }}>Fachrul</span>
               )}
               {x === GOAL.x && y === GOAL.y && (x !== pos.x || y !== pos.y) && (
-                <span style={{ fontSize: '0.7rem' }}>Dias</span>
+                <span style={{ fontSize: '0.7rem', fontWeight: 'bold' }}>Dias</span>
               )}
             </div>
           ))

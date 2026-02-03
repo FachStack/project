@@ -21,10 +21,18 @@
 body {
   font-family: 'Quicksand', sans-serif;
   color: var(--text-dark);
-  background-color: var(--pastel-peach);
+  background: linear-gradient(-45deg, #fff5f5, #fff0f3, #f0f7ff, #fdf2f8);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 #root {
@@ -60,8 +68,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.2;
-  filter: blur(2px);
+  opacity: 0.15;
 }
 
 .bg-overlay {
@@ -70,55 +77,138 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.4) 100%);
 }
 
-h1, h2, h3 {
-  font-weight: 700;
-  margin-bottom: 1rem;
+/* Floating Animations */
+.floating-1 { animation: float1 8s ease-in-out infinite; }
+.floating-2 { animation: float2 10s ease-in-out infinite; }
+.floating-3 { animation: float3 12s ease-in-out infinite; }
+
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0) rotate(var(--rotation)); }
+  50% { transform: translate(10px, -20px) rotate(calc(var(--rotation) + 5deg)); }
 }
 
-p {
-  line-height: 1.6;
-  font-weight: 400;
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0) rotate(var(--rotation)); }
+  50% { transform: translate(-15px, -25px) rotate(calc(var(--rotation) - 8deg)); }
 }
 
+@keyframes float3 {
+  0%, 100% { transform: translate(0, 0) rotate(var(--rotation)); }
+  33% { transform: translate(15px, -15px) rotate(calc(var(--rotation) + 3deg)); }
+  66% { transform: translate(-10px, -30px) rotate(calc(var(--rotation) - 5deg)); }
+}
+
+.polaroid {
+  background: white;
+  padding: 8px 8px 24px 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  border-radius: 2px;
+  transform: rotate(var(--rotation));
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  width: 110px;
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.polaroid img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  filter: sepia(0.1) contrast(1.05);
+  border-radius: 1px;
+}
+
+.polaroid-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.page-content {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Button Designs */
 button {
   cursor: pointer;
   border: none;
-  border-radius: 20px;
-  padding: 12px 24px;
   font-family: inherit;
   font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  background-color: var(--white);
-  color: var(--text-dark);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  font-weight: 700;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 button:active {
-  transform: scale(0.95);
-}
-
-button:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: scale(0.92);
 }
 
 .btn-primary {
-  background-color: var(--accent);
+  background: linear-gradient(135deg, #ff8b94 0%, #ffb1b8 100%);
   color: white;
+  padding: 14px 32px;
+  border-radius: 50px;
+  box-shadow: 0 6px 20px rgba(255, 139, 148, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.btn-secondary {
-  background-color: var(--pastel-blue);
-  color: var(--text-dark);
+.btn-primary:hover {
+  box-shadow: 0 10px 25px rgba(255, 139, 148, 0.5);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
 }
 
 .btn-outline {
-  background-color: transparent;
-  border: 2px solid var(--accent);
-  color: var(--accent);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-dark);
+  border: 2px solid #ff8b94;
+  padding: 12px 28px;
+  border-radius: 50px;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: #ffb1b8;
+  transform: translateY(-2px);
 }
 
 .fade-in-text {
@@ -128,67 +218,11 @@ button:hover {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-.maze-message {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--accent);
-  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.9);
-  padding: 5px 10px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 10px;
-  backdrop-filter: blur(4px);
-}
-
 @keyframes fadeIn {
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.polaroid {
-  background: white;
-  padding: 10px 10px 30px 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-  border-radius: 2px;
-  transform: rotate(var(--rotation));
-  transition: transform 0.3s ease;
-  width: 120px;
-  position: absolute;
-  pointer-events: none;
-}
-
-.polaroid img {
-  width: 100%;
-  height: 100px;
-  object-fit: cover;
-  filter: sepia(0.2) contrast(1.1);
-}
-
-.floating {
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(var(--rotation)); }
-  50% { transform: translateY(-20px) rotate(calc(var(--rotation) + 3deg)); }
-}
-
-.page-content {
-  position: relative;
-  z-index: 2;
-  min-height: 100%;
-}
-
-.polaroid-bg-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
 }
 
 /* Custom Scrollbar */
@@ -236,4 +270,14 @@ button:hover {
   justify-content: center;
   background: var(--pastel-green);
   font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+.maze-trail {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--pastel-pink);
+  border-radius: 50%;
+  pointer-events: none;
 }

@@ -17,7 +17,7 @@ export const CONFIG = {
 export const TEXTS = {
   page0: [
     "Halo.",
-    "Ini mungkin terdengar agak aneh.",
+    "Ini mungkin kedengeran agak aneh.",
     "Tapi gua pengen cerita sedikit."
   ],
   page1: [
@@ -47,7 +47,6 @@ export const TEXTS = {
       "Selalu ada kejadian aneh tapi bikin ngakak.",
 
       "Dan jujur aja,",
-      "Di titik ini,",
       "gua nggak lagi nganggep ini biasa."
     ]
   },
@@ -69,8 +68,10 @@ export const TEXTS = {
     "Tapi ke lu,",
     "gua pengen jujur.",
 
-    "Dan soal perasaan ini,",
-    "gua pengen kita nyoba ke arah yang lebih dari sekadar teman."
+    "Gua ngerasa lebih bahagia kalau ada lu.",
+    "Gua ngerasa lebih nyaman kalau ada lu.",
+    "Gua ngerasa banyak rasa tumbuh tiap kali ngobrol sama lu",
+
   ],
   final: {
     question: "Di titik ini, gua pengen jujur sama lu.\n\nSekarang gua mau nanya satu hal, dan gua pengen lu jawab sejujurnya juga.\n\nMau nggak, kita jalanin ini bareng?",
