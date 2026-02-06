@@ -67,7 +67,7 @@ const Page3Maze: React.FC<Page3MazeProps> = ({ onComplete }) => {
 
   return (
     <div className="page-content" style={{ textAlign: 'center' }}>
-      <h2 style={{ fontSize: '1.2rem', marginBottom: '10px' }}>Temuin "Dias" ya... 💖</h2>
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '10px', color: '#ff4d6d', fontWeight: 'bold', textShadow: '0 0 10px rgba(255, 77, 109, 0.3)' }}>Temuin "Dias" ya... 💖</h2>
       <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '20px' }}>
         {TEXTS.maze.controls}
       </p>
@@ -81,6 +81,7 @@ const Page3Maze: React.FC<Page3MazeProps> = ({ onComplete }) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               className="maze-message"
+              style={{ fontSize: '1.3rem', color: '#d63384', fontWeight: '800', textShadow: '0 2px 4px rgba(255, 255, 255, 1)' }}
             >
               "{TEXTS.maze.messages[messageIndex]}"
             </motion.p>

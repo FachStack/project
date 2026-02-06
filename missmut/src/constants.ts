@@ -1,5 +1,11 @@
 export const CONFIG = {
-  phoneNumber: '628123456789', // Target WhatsApp number
+  phoneNumber: '628561333537', // Target WhatsApp number
+  emailJS: {
+    serviceId: 'service_m1zoypw', // Replace with your Service ID
+    templateId: 'template_883p8y7', // Replace with your Template ID
+    publicKey: 'puybmNeQAab-GkRkB', // Replace with your Public Key
+    targetEmail: 'fachsyaban@gmail.com'
+  },
   musicPath: '/music/adikara-katakan-saja.mp3',
   photos: [
     '/photos/IMG-20251220-WA0003.jpg',
@@ -74,7 +80,7 @@ export const TEXTS = {
 
   ],
   final: {
-    question: "Di titik ini, gua pengen jujur sama lu.\n\nSekarang gua mau nanya satu hal, dan gua pengen lu jawab sejujurnya juga.\n\nMau nggak, kita jalanin ini bareng?",
+    question: "Di titik ini, gua mau jujur sama lu.\nGua cuma mau nanya satu hal, dan gua pengen lu jawab sejujurnya juga.Lu mau nggak kita jalanin ini bareng?",
     reasonsTitle: "Gapapaa, jujur aja.\nKalau lu berkenan, boleh ceritain dikit alasannya?",
     placeholder: "Tulis sejujurnya, gua hargain.",
     thanks: "Makasih ya udah jujur. Apapun jawaban lu, gua hargain."

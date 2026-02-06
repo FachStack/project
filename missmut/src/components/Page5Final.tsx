@@ -13,6 +13,17 @@ const Page5Final: React.FC<Page5FinalProps> = ({ onFinish }) => {
   const [decision, setDecision] = useState<string | null>(null);
   const [reason, setReason] = useState('');
   const [showThanks, setShowThanks] = useState(false);
+  const [escapeCount, setEscapeCount] = useState(0);
+  const [btnPos, setBtnPos] = useState({ x: 0, y: 0 });
+
+  const handleRunaway = () => {
+    if (escapeCount < 2) {
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 200 - 100;
+      setBtnPos({ x, y });
+      setEscapeCount(prev => prev + 1);
+    }
+  };
 
   const handleDecision = (choice: string) => {
     setDecision(choice);
@@ -28,7 +39,7 @@ const Page5Final: React.FC<Page5FinalProps> = ({ onFinish }) => {
       setTimeout(() => {
         onFinish(choice);
         setShowThanks(true);
-      }, 1500);
+      }, 800);
     }
   };
 
@@ -57,7 +68,7 @@ const Page5Final: React.FC<Page5FinalProps> = ({ onFinish }) => {
       <FloatingPolaroids />
       
       <AnimatePresence mode="wait">
-        {!decision ? (
+        {!decision || (decision !== 'Nggak dulu' && !showThanks) ? (
           <motion.div
             key="question"
             initial={{ opacity: 0, y: 20 }}
@@ -70,15 +81,30 @@ const Page5Final: React.FC<Page5FinalProps> = ({ onFinish }) => {
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <button className="btn-primary" onClick={() => handleDecision('Mau 💖')}>
-                Mau 💖
+              <button 
+                className="btn-primary" 
+                onClick={() => handleDecision('Mau 💖')}
+                disabled={decision === 'Mau 💖'}
+              >
+                {decision === 'Mau 💖' ? 'Mengirim... 💖' : 'Mau 💖'}
               </button>
-              <button className="btn-primary" onClick={() => handleDecision('Mau banget 💕')}>
-                Mau banget 💕
-              </button>
-              <button className="btn-outline" onClick={() => handleDecision('Nggak dulu')} style={{ backgroundColor: 'rgba(255,255,255,0.8)' }}>
+              <motion.button
+                animate={{ x: btnPos.x, y: btnPos.y }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                onMouseEnter={handleRunaway}
+                onTapStart={handleRunaway}
+                className="btn-outline"
+                onClick={() => {
+                  if (escapeCount < 2) {
+                     handleRunaway();
+                  } else {
+                     handleDecision('Nggak dulu');
+                  }
+                }}
+                style={{ backgroundColor: 'rgba(255,255,255,0.8)', position: 'relative' }}
+              >
                 Nggak dulu
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         ) : (

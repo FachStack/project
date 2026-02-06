@@ -10,6 +10,8 @@ import Page3Maze from './components/Page3Maze';
 import Page4Confession from './components/Page4Confession';
 import Page5Final from './components/Page5Final';
 
+import emailjs from '@emailjs/browser';
+
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0); // Start at Page 0
   const [isPlaying, setIsPlaying] = useState(false);
@@ -39,23 +41,41 @@ const App: React.FC = () => {
     nextPage();
   };
 
-  const handleFinish = (answer: string, reason?: string) => {
+  const handleFinish = async (answer: string, reason?: string) => {
     const timestamp = new Date().toLocaleString('id-ID');
-    let message = `Jawaban dari web kamu:
-Pilihan: ${answer}
-Waktu: ${timestamp}`;
+    
+    // Gather device info
+    const deviceInfo = {
+      os: navigator.platform,
+      browser: navigator.userAgent.split(' ').pop(),
+      screen: `${window.screen.width}x${window.screen.height}`,
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      userAgent: navigator.userAgent
+    };
 
-    if (reason) {
-      message += `\nAlasan: ${reason}`;
+    const messageContent = `Pilihan: ${answer}${reason ? `\nAlasan: ${reason}` : ''}\nWaktu: ${timestamp}\n\n[Device Info]\nOS: ${deviceInfo.os}\nScreen: ${deviceInfo.screen}\nUA: ${deviceInfo.userAgent}`;
+
+    // 1. Send Email via EmailJS
+    try {
+      await emailjs.send(
+        CONFIG.emailJS.serviceId,
+        CONFIG.emailJS.templateId,
+        {
+          to_email: CONFIG.emailJS.targetEmail,
+          message: messageContent,
+          answer: answer,
+          reason: reason || 'Tidak ada',
+          timestamp: timestamp,
+          device_os: deviceInfo.os,
+          device_screen: deviceInfo.screen,
+          user_agent: deviceInfo.userAgent
+        },
+        CONFIG.emailJS.publicKey
+      );
+      console.log('Email sent successfully via EmailJS');
+    } catch (error) {
+      console.error('Failed to send email via EmailJS:', error);
     }
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${CONFIG.phoneNumber}?text=${encodedMessage}`;
-
-    // Redirect to WhatsApp
-    setTimeout(() => {
-      window.open(whatsappUrl, '_blank');
-    }, 2000);
   };
 
   const renderPage = () => {
